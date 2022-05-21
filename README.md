@@ -1,0 +1,2 @@
+# Slider
+Slider of images
