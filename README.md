@@ -1,7 +1,6 @@
 # Slider
 Slider of images
 Made using 
-  -HTML⋅⋅
-  -Css⋅⋅
-  -Vanilla Javascript
-  
+  * HTML *
+  * CSS *
+  * Vanilla Javascript
