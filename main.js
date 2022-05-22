@@ -4,8 +4,6 @@ let indicatorContainer = document.querySelector(".number-container");
 let counter = document.querySelector(".slider-counter");
 let images = Array.from(document.querySelectorAll(".slide-image"));
 let imagesLength = images.length;
-// let isFirst = slidesNum[0];
-// let isLast = slidesNum[slidesNum.length - 1];
 
 currentSlide = 1;
 
