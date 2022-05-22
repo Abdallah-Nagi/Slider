@@ -31,6 +31,7 @@ main {
   padding: 5px;
   border-radius: 10px;
 }
+
 .nav-container {
   display: flex;
   flex-direction: column;
@@ -46,7 +47,15 @@ main {
   border-radius: 8px;
   cursor: pointer;
 }
-
+.next-btn.disable,
+.previous-btn.disable {
+  cursor: not-allowed;
+  background-color: rgb(175, 178, 255);
+}
+.next-btn.disable:hover,
+.previous-btn.disable:hover {
+  background-color: rgb(175, 178, 255);
+}
 .number-container {
   order: -1;
   margin-bottom: 1em;
@@ -61,6 +70,14 @@ main {
   border-radius: 5px;
   margin-left: 10px;
   cursor: pointer;
+}
+.slide-number:hover,
+.next-btn:hover,
+.previous-btn:hover {
+  background-color: #4c4cd0;
+}
+.slide-number.active {
+  background-color: #4c4cd0;
 }
 .slider-number:hover {
   background: #8484fa;
