@@ -1,109 +1,78 @@
 let prevBtn = document.querySelector(".previous-btn");
 let nextBtn = document.querySelector(".next-btn");
-let slidesNum = document.querySelectorAll(".slide-number");
+let indicatorContainer = document.querySelector(".number-container");
 let counter = document.querySelector(".slider-counter");
-let images = document.querySelectorAll(".slide-image");
+let images = Array.from(document.querySelectorAll(".slide-image"));
+let imagesLength = images.length;
+// let isFirst = slidesNum[0];
+// let isLast = slidesNum[slidesNum.length - 1];
 
-let isFirst = slidesNum[0];
-let isLast = slidesNum[slidesNum.length - 1];
-// ***************EVENT LISTENERS***************************
-slidesNum.forEach((slideNum) => {
-  slideNum.addEventListener("click", (e) => {
-    heighlightNum(e.target);
-    updateCounter(e.target);
-    changeImage(e.target);
-    if (checkPosition(isLast)) {
-      disableBtn(nextBtn);
-    } else {
-      RemoveDisable(nextBtn);
-    }
-    if (checkPosition(isFirst)) {
-      disableBtn(prevBtn);
-    } else {
-      RemoveDisable(prevBtn);
-    }
-  });
-});
+currentSlide = 1;
 
+// Create indicators dynamiclly
+for (let i = 1; i <= imagesLength; i++) {
+  let slideIndicator = document.createElement("span");
+  slideIndicator.classList.add("slide-number");
+  slideIndicator.setAttribute("data-index", i);
+  slideIndicator.textContent = i;
+  indicatorContainer.appendChild(slideIndicator);
+}
+
+let indicatorItems = Array.from(indicatorContainer.children);
+
+check();
 nextBtn.addEventListener("click", () => {
-  if (!checkPosition(isLast)) {
-    updateCounter(getNextorPrevSlide("next"));
-    changeImage(getNextorPrevSlide("next"));
-    heighlightNum(getNextorPrevSlide("next"));
-    if (checkPosition(isLast)) {
-      disableBtn(nextBtn);
-    }
+  if (currentSlide != imagesLength) {
+    currentSlide++;
+    check();
   }
 });
 
 prevBtn.addEventListener("click", () => {
-  if (!checkPosition(isFirst)) {
-    updateCounter(getNextorPrevSlide("prev"));
-    changeImage(getNextorPrevSlide("prev"));
-    heighlightNum(getNextorPrevSlide("prev"));
-    if (checkPosition(isFirst)) {
-      disableBtn(prevBtn);
-    }
+  if (currentSlide != 1) {
+    currentSlide--;
+    check();
   }
 });
-// ***************END EVENT LISTENERS***************************
 
-// ***************FUNCTIONS***************************
-// heighlight new slide number when clicked
-function heighlightNum(slide) {
-  slidesNum.forEach((slide) => {
-    slide.classList.remove("active");
-  });
-  slide.classList.add("active");
-}
+function check() {
+  // update counter value
+  counter.textContent = `Slide ${currentSlide} / ${imagesLength} `;
 
-// Get the slide with the next active class
-function getNextorPrevSlide(order) {
-  let nextSlide;
-  let prevSlide;
-  slidesNum.forEach((slide, index) => {
-    if (slide.classList.contains("active") && order == "next") {
-      nextSlide = slidesNum[index + 1];
-    } else if (slide.classList.contains("active") && order == "prev") {
-      prevSlide = slidesNum[index - 1];
-    }
-  });
-  if (order == "next") {
-    return nextSlide;
-  } else if (order == "prev") {
-    return prevSlide;
-  }
-}
-
-// update the slide number counter
-function updateCounter(slideNum) {
-  counter.textContent = `Slide ${slideNum.textContent} / ${slidesNum.length}`;
-}
-
-// Update slider image
-function changeImage(slide) {
+  // remove visible from all images then add visible to current image
   images.forEach((image) => {
     image.classList.remove("visible");
   });
-  images[slide.textContent - 1].classList.add("visible");
-}
+  images[currentSlide - 1].classList.add("visible");
 
-// Check if current slide is last
-function checkPosition(slide) {
-  if (slide.classList.contains("active")) {
-    return true;
+  // remove active from all indicators then add visible to current indicator
+
+  indicatorItems.forEach((item) => {
+    item.classList.remove("active");
+  });
+
+  indicatorItems[currentSlide - 1].classList.add("active");
+  if (currentSlide == imagesLength) {
+    disableBtn(nextBtn);
+  } else {
+    RemoveDisable(nextBtn);
+  }
+
+  if (currentSlide == 1) {
+    disableBtn(prevBtn);
+  } else {
+    RemoveDisable(prevBtn);
   }
 }
-// function to return the next counter
-function nextCountIndex() {
-  let newValue;
-  slidesNum.forEach((slide, index) => {
-    if (slide.classList.contains("active")) {
-      newValue = slidesNum[index + 1];
-    }
+
+indicatorItems.forEach((indicator) => {
+  indicator.addEventListener("click", () => {
+    currentSlide = indicator.getAttribute("data-index");
+    check();
   });
-  return newValue;
-}
+});
+
+// ***************FUNCTIONS***************************
 // Add disabled class for next btn
 function disableBtn(btn) {
   btn.classList.add("disable");
